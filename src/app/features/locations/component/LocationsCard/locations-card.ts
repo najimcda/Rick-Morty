@@ -12,3 +12,5 @@ import { Character } from '../../../characters/types/character.type';
 export class LocationsCard {
 location = input.required<Locations>();
 }
+
+import { LocationWithResidents } from '../../service/locations-service';
