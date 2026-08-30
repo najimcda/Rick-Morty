@@ -31,6 +31,54 @@
       </p>
     </div>
 
+<div class="mb-12 flex flex-wrap items-center justify-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+      <div class="flex flex-col gap-1">
+        <label class="text-xs uppercase tracking-wider text-slate-400">Statut</label>
+        <select
+          (change)="onFilterChange('status', $any($event.target).value)"
+          class="rounded-lg border border-white/10 bg-slate-900 px-4 py-2 text-sm text-white outline-none focus:border-green-400/50"
+        >
+          <option value="">Tous</option>
+          @for (status of statusOptions; track status) {
+            <option [value]="status">{{ status }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-xs uppercase tracking-wider text-slate-400">Genre</label>
+        <select
+          (change)="onFilterChange('gender', $any($event.target).value)"
+          class="rounded-lg border border-white/10 bg-slate-900 px-4 py-2 text-sm text-white outline-none focus:border-green-400/50"
+        >
+          <option value="">Tous</option>
+          @for (gender of genderOptions; track gender) {
+            <option [value]="gender">{{ gender }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-xs uppercase tracking-wider text-slate-400">Espèce</label>
+        <select
+          (change)="onFilterChange('species', $any($event.target).value)"
+          class="rounded-lg border border-white/10 bg-slate-900 px-4 py-2 text-sm text-white outline-none focus:border-green-400/50"
+        >
+          <option value="">Toutes</option>
+          @for (species of speciesOptions; track species) {
+            <option [value]="species">{{ species }}</option>
+          }
+        </select>
+      </div>
+
+      <button
+        (click)="resetFilters()"
+        class="mt-5 rounded-lg border border-green-400/30 bg-green-400/10 px-4 py-2 text-sm text-green-300 transition hover:bg-green-400/20"
+      >
+        Réinitialiser
+      </button>
+    </div>
+
     <!-- Cards -->
     <app-pagination [currentPage]="currentPage()" [totalPages]="totalPage()" (changePage)="changePage($event)"/>
     <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">

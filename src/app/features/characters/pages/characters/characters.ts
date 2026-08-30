@@ -1,7 +1,7 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { Character } from '../../types/character.type';
 import { CharacterCard } from '../../components/character-card/character-card';
-import { CharactersService } from '../../services/characters';
+import { CharactersService, CharacterFilters } from '../../services/characters';
 import { ApiResponse, InfoResponse } from '../../../../shared/types/api-response.types';
 import { Pagination } from '../../components/pagination/pagination';
 
@@ -17,19 +17,24 @@ export class Characters implements OnInit {
   readonly infos = signal<InfoResponse>({} as InfoResponse);
   currentPage = signal(1);
   totalPage = signal(0);
+  filters = signal<CharacterFilters>({});
+
+  readonly statusOptions = ['alive', 'dead', 'unknown'];
+  readonly genderOptions = ['female', 'male', 'genderless', 'unknown'];
+  readonly speciesOptions = [
+    'Human', 'Alien', 'Humanoid', 'Robot', 'Animal',
+    'Mythological Creature', 'Cronenberg', 'Disease', 'unknown',
+  ];
 
   ngOnInit() {
-    // Method 1 : Do everything in the service
-    this.characterService.getCharactersFromService().subscribe();
-    // Method 2 : Get needed value in the component directly
     this.loadCharacters();
   }
 
-  loadCharacters(page?: number) {
-    this.currentPage.set(page ? page : 1);
+  loadCharacters(page: number = 1) {
+    this.currentPage.set(page);
 
     this.characterService
-      .getCharacterFromComponent()
+      .getCharacters(page, this.filters())
       .subscribe((response: ApiResponse<Character[]>) => {
         this.infos.set(response.info);
         this.totalPage.set(this.infos().pages);
@@ -37,7 +42,16 @@ export class Characters implements OnInit {
   }
 
   changePage(page: number) {
-    this.currentPage.set(page);
-    this.characterService.getCharactersFromService(page).subscribe();
+    this.loadCharacters(page);
+  }
+
+  onFilterChange(key: keyof CharacterFilters, value: string) {
+    this.filters.update((f) => ({ ...f, [key]: value || undefined }));
+    this.loadCharacters(1);
+  }
+
+  resetFilters() {
+    this.filters.set({});
+    this.loadCharacters(1);
   }
 }
