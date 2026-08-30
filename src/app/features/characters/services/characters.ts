@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, catchError, of} from 'rxjs';
 import { Character } from '../types/character.type';
 import { ApiResponse } from '../../../shared/types/api-response.types';
 
